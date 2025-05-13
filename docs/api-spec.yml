@@ -1,0 +1,172 @@
+openapi: 3.0.0
+info:
+    title: "ChAI-api's"
+    version: "1.0.0"
+    description: "API for ChAI application"
+servers:
+    - url: "http://localhost:5000"
+      description: "Local server"
+tags:
+    - name: "ChatThread"
+      description: Api's related to chat threads.
+    - name: "ChatMessage"
+      description: Api's related to messages
+    - name: "User"
+      description: Api's related to user management
+paths:
+  /api/users/me:
+    get:
+      tags:
+        - User
+      description: Get the current user's profile information
+      summary:  Get the current user's profile information
+      responses:
+        200:
+          description: User info retrieved succesfully document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        500:
+          description: Server Error Occoured.
+    put:
+      tags:
+        - User
+      description: Update the user profile
+      summary: Updated the details of the given user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInfo"
+      responses:
+        200:
+          description: User info updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        500:
+          description: Server error occoured
+  /api/users:
+    get:
+      tags:
+        - User
+      description: Get basic info of all user's
+      summary: Get basic details of all user's
+      responses:
+        200:
+          description: All users info retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        500:
+          description: Server Error Occoured
+
+  /api/chat-threads:
+    get:
+      tags:
+        - ChatThread
+      summary: List all chat threads for a user
+      description: Fetch a list of all chat threads
+      responses:
+        200:
+          description: list of chat threads retrieved successfully
+          content:
+              application/json:
+                  schema:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/ChatThread"
+        500:
+          description: "Server Error Occoured"
+    post:
+      tags:
+        - ChatThread
+      summary: Create a new chat thread.
+      description: To create a new chat thread for a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/ChatThreadCreate"
+      responses:
+        201:
+          description: Chat thread created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatThread"
+        500:
+          description: Server Error Occoured
+  /api/chat-threads/{id}:
+    get:
+      tags:
+        - ChatThread
+      summary: Get all the messages of given chat thread
+      description: Retrieve all messages of a given chat thread of a user
+      responses:
+        200:
+          description: list of all messages for a chat thread for a user retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatThread"
+        500:
+          description: Server Error Occoured
+  /api/chat-threads/{id}/messages:
+    post:
+      tags:
+        - ChatMessage
+      summary: add a message to given chat thread of a user
+      description: add message to chat thread of a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatThread"
+
+      responses:
+        200:
+          description: adding message to the chat thread successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatThread"
+        500:
+          description: "Server error occoured"
+      
+components:
+  schemas:
+    ChatThread:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier for a chat thread
+        name:
+          type: string
+          description: Name of the chat thread
+        created_at:
+          type: string
+          format: data-time
+          description: A timestamp of the chat thread created
+    ChatThreadCreate:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: id of the user for to create a chat thread
+    UserInfo:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The info of the requested user
+
+
+
