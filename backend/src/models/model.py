@@ -47,9 +47,40 @@ class Message(Document):
 async def main():
     db = await db_connection()
     await init_beanie(database=db,document_models=[User, Threads, Message])
+    # user1 = User(
+    #     auth0_id="srtjrtyeyj",
+    #     username="klarkin",
+    #     email="lfnejrv@njebrt.oxm",
+    #     auth_provider="oauth",
+    #     created_at=datetime.utcnow(),
+    #     updated_at=datetime.utcnow(),
+    #     profile_picture="http://evhertvbr.com",
+    #     bio="teyjhntyn",
+    #     memories=['wrvbr','hethbr'],
+    #     custom_instructions=['rhtbertb'],
+    #     role=['user'],
+    #     preferences={"theme":"dark","notification":True},
+    #     age=1234,
+    #     chat_threads=[PydanticObjectId("64c7b5e6f9f2d34b56c6c7c8"),PydanticObjectId("64c7b5e6f9f2d34b56c6c7c6")]
+    # )
+    # await user1.save()
     
-    users = await User.find()
-    print(users)
+    thread1 = Threads(
+        user_id=PydanticObjectId("64c7b5e6f9f2d34b56c6c7c8"),
+        title="ohuigbh",
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow(),
+        messages=[PydanticObjectId("64c7b5e6f9f2d34b56c6c7c8"),PydanticObjectId("64c7b5e6f9f2d34b56c6c7d4")]
+    )
+    
+    message = Message(
+        thread_id=PydanticObjectId("64c7b5e6f9f2d34b56c6c7c8"),
+        created_at=datetime.utcnow(),
+        sender="gbr",
+        message_content="brtbrwtb"
+    )
+    await thread1.save()
+    await message.save()
 
 
 asyncio.run(main())
